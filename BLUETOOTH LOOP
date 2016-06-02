@@ -1,0 +1,25 @@
+//start program
+void loop(){
+ //Reads incoming seral data
+  byte data = Serial.read()
+
+ //read data and call function
+  if(data=='g'){
+  go();
+  }
+
+  else if(data=='b'){
+  back();
+  }
+
+  else if(data=='r'){
+  rightTurn();
+  }
+
+  else if(data=='l'){
+  leftTurn();
+  }
+
+  else
+  stopCar();
+  }
