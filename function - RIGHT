@@ -1,0 +1,11 @@
+//turn right
+void leftTurn(){
+digitalWrite(in1_front,HIGH);
+digitalWrite(in2_front,LOW);
+digitalWrite(in3_front,LOW);
+digitalWrite(in4_front,HIGH);
+digitalWrite(in1_rear,HIGH);
+digitalWrite(in2_rear,LOW);
+digitalWrite(in3_rear,LOW);
+digitalWrite(in4_rear,HIGH);
+}
