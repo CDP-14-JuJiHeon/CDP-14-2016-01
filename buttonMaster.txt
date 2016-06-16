@@ -1,0 +1,50 @@
+/*=============================================================================================
+ * File Name : buttonMaster
+ * Read digital data which is sent from push button and Send data to RC car.
+ * Source code is Made by [Team BT]
+ * Arduino controller(-button) program
+=============================================================================================*/
+#include <SoftwareSerial.h>
+
+//Bluetooth setting (using pin number 2 and 3)
+SoftwareSerial BTSerial(2,3);
+
+/**
+ * Use two button for control trash plate
+ * because plate move up and down
+ */
+const int button1Pin = 8;
+const int button2Pin = 9;
+
+//setup (run once)
+void setup() {
+  pinMode(button1Pin, INPUT);
+  pinMode(button2Pin, INPUT);
+  //Sets the data rate in bits per second (baud) for serial data transmission
+  //baud : 9600
+  BTSerial.begin(9600);
+}
+
+//start program. execute repeatedly
+void loop() {
+  /**
+   * button1State and button2State store integer(digital signal-0,1) 
+   * which is sent from push button
+   */
+  int button1State = digitalRead(button1Pin);
+  int button2State = digitalRead(button2Pin);
+
+  /**
+   * when Button is pushed, State change LOW 
+   * default state is HIGH
+   */
+  if(button1State == LOW){
+    BTSerial.print("A");
+  }
+  if(button2State == LOW){
+    BTSerial.print("B");
+  }
+  if(button1State == HIGH && button2State == HIGH){
+    BTSerial.print("S");
+  }
+}
