@@ -1,0 +1,110 @@
+/*=============================================================================================
+ * File Name : MovingCar
+ * Receive data from controller and execute function that activate motor using motor driver
+ * Source code is Made by [Team BT]
+ * Arduino RC car movement program
+=============================================================================================*/
+#include <SoftwareSerial.h>
+
+//Bluetooth setting (using pin number 2 and 3)
+SoftwareSerial BTSerial(2,3);
+
+/*
+ * Motor driver setting 
+ * ENA, IN1, IN2 control one motor and ENB, IN3, IN4 control another one
+ * IN1~IN4 receive digital signal -> Control rotation direction of motor
+ */
+int ENA_rear = 0;
+int in1_rear = 1;
+int in2_rear = 4;
+int in3_rear = 5;
+int in4_rear = 6;
+int ENB_rear = 7;
+
+
+
+//setup (run once)
+void setup() {
+  //pin mode setting. these pins are OUTPUT mode
+  pinMode(ENA_rear,OUTPUT);
+  pinMode(in1_rear,OUTPUT);
+  pinMode(in2_rear,OUTPUT);
+  pinMode(in3_rear,OUTPUT);
+  pinMode(in4_rear,OUTPUT);
+  pinMode(ENB_rear,OUTPUT);
+  
+  //for using in1 and in2, ENA is setted high. 
+  //ENB is same here.
+  digitalWrite(ENA_rear,HIGH);
+  digitalWrite(ENB_rear,HIGH);
+  
+  //Sets the data rate in bits per second (baud) for serial data transmission
+  //baud : 9600
+  BTSerial.begin(9600);  
+}
+
+//start program. execute repeatedly
+void loop() {
+  
+  //variable for store data which is received from controller
+  byte data = BTSerial.read();
+
+  if(data=='s'){
+    stopCar();
+  }
+  if(data=='g'){
+    go();
+  }
+  if(data=='b'){
+    back();
+  }
+  if(data=='l'){
+    left();
+  }
+  if(data=='r'){
+    right();
+  }
+}
+
+//go forward
+void go(){
+  digitalWrite(in1_rear,LOW);
+  digitalWrite(in2_rear,HIGH);
+  digitalWrite(in3_rear,LOW);
+  digitalWrite(in4_rear,HIGH);
+  
+}
+
+//go backward
+void back(){
+  digitalWrite(in1_rear,HIGH);
+  digitalWrite(in2_rear,LOW);
+  digitalWrite(in3_rear,HIGH);
+  digitalWrite(in4_rear,LOW);
+}
+
+//stop car
+void stopCar(){
+  digitalWrite(in1_rear,LOW);
+  digitalWrite(in2_rear,LOW);
+  digitalWrite(in3_rear,LOW);
+  digitalWrite(in4_rear,LOW);
+}
+
+//turn right
+void right(){;
+  digitalWrite(in1_rear,HIGH);
+  digitalWrite(in2_rear,LOW);
+  digitalWrite(in3_rear,LOW);
+  digitalWrite(in4_rear,HIGH);  
+}
+
+//turn left
+void left(){
+  digitalWrite(in1_rear,LOW);
+  digitalWrite(in2_rear,HIGH);
+  digitalWrite(in3_rear,HIGH);
+  digitalWrite(in4_rear,LOW);
+
+}
+
