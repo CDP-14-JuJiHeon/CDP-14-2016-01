@@ -1,0 +1,63 @@
+/*=============================================================================================
+ * File Name : buttonSlave
+ * Read digital data which is sent from controller
+ * Source code is Made by [Team BT]
+ * Arduino trash plate(button) program
+=============================================================================================*/
+#include <SoftwareSerial.h>
+
+//Bluetooth setting (using pin number 2 and 3)
+SoftwareSerial BTSerial(2,3);
+
+/**
+ * trash plate use one motor. 
+ * so, do not use in3, in4, ENB 
+ */
+int ENA = 0;
+int in1 = 1;
+int in2 = 4;
+
+//setup (run once)
+void setup() {
+  //Sets the data rate in bits per second (baud) for serial data transmission
+  //baud : 9600
+  BTSerial.begin(9600);
+  
+  pinMode(ENA,OUTPUT);
+  pinMode(in1,OUTPUT);
+  pinMode(in2,OUTPUT);
+  digitalWrite(ENA,HIGH);
+}
+
+//start program. execute repeatedly
+void loop() {   
+  byte data = BTSerial.read();
+
+  if(data=='A'){
+    rotate();
+  }
+  if(data=='B'){
+    inverse();
+  }
+  if(data=='S'){
+    pause();
+  }
+}
+
+//motor rotate
+void rotate(){
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+}
+
+//rotate inverse
+void inverse(){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+}
+
+//stop
+void pause(){
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+}
