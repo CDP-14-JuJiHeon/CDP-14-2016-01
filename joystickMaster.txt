@@ -1,0 +1,53 @@
+/*=============================================================================================
+ * File Name : joystickMaster
+ * Read analog data which is sent from joystick module and Send data to RC car.
+ * Source code is Made by [Team BT]
+ * Arduino Controller(-joystick) program
+=============================================================================================*/
+#include <SoftwareSerial.h>
+
+//Bluetooth setting (using pin number 2 and 3)
+SoftwareSerial BTSerial(2,3);
+
+/**
+ * Joystick module using 3 pins
+ * SW_pin : Switch (push joystick module)
+ * X_pin : Horizontal
+ * Y_pin : Vertical
+ */
+const int SW_pin = 5;
+const int X_pin = 0;
+const int Y_pin = 1;
+
+//setup (run once)
+void setup() {
+  pinMode(SW_pin, INPUT);
+  digitalWrite(SW_pin, HIGH);
+  
+  //Sets the data rate in bits per second (baud) for serial data transmission
+  //baud : 9600
+  BTSerial.begin(9600);
+}
+
+//start program. execute repeatedly
+void loop() {
+  /**
+   * X_pin and Y_pin default value is 511(¡¾10)
+   * minimum value is 0 and maximum value is 1023
+   */ 
+  if(analogRead(X_pin)<50){
+    BTSerial.write("l");
+  }
+  else if(analogRead(X_pin)>1000){
+    BTSerial.write("r");
+  }
+ else if(analogRead(Y_pin)<50){
+    BTSerial.write("g");
+ }
+ else if(analogRead(Y_pin)>1000){
+    BTSerial.write("b");
+ }
+ else{
+  BTSerial.write("s");
+ }
+}
